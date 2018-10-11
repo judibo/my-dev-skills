@@ -1,0 +1,24 @@
+nav {
+    background-color: black;
+}
+ul {
+    list-style-type: none;
+    display: inline-flex;
+}
+
+.right {
+    float: right;
+}
+
+a {
+    color: white;
+}
+
+footer {
+    bottom: 0;
+    background-color: black;
+    color: white;
+    position: fixed;
+    width: 100%;
+    text-align: center;
+}
