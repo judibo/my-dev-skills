@@ -18,19 +18,20 @@
                 <li><a href="/" >My Dev Skills</a></li>
             </ul>
             <ul class="right">
-                <li><a href="/about">About</a></li> | 
-                <li><a href="/cats">View All My Skills</a></li>
                 {% if user.is_authenticated %}
+                    <li>Welcome, {{ user.username }}!</li>
+                    <li> | </li>    
+                    <li><a href="/skills">My Skills</a></li> 
                     <li> | </li>
-                    <li><a href="{% url 'profile' user.username %}">Hello, {{ user.username }}!</a></li>
+                    <li><a href="/skills/create">Add Skill!</a></li>
                     <li> | </li>
                     <li><a href="{% url 'logout' %}">Logout</a></li>
-                    {% else %}
                     <li> | </li>
+                {% else %}
                     <li><a href="{% url 'login' %}">Login</a></li>
                     <li> | </li>
                     <li><a href="{% url 'signup' %}">SignUp</a></li>
-                    {% endif %}
+                {% endif %}
             </ul>
         </nav>
     </header>

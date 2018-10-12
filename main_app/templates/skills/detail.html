@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>{{ skill.description }}</h1>
+    <div class="card">
+        <p>Level: {{ skill.get_skill_level_display }}</p>
+        <a href="{% url 'skills_update' skill.id %}">Update Details</a> | 
+        <a href="{% url 'skills_delete' skill.id %}">DELETE This skill</a>
+    </div>
+
+{% endblock %}
+

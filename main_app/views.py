@@ -1,12 +1,34 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from .models import User
+from .models import Skill
 from .forms import LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 
+class SkillCreate(CreateView):
+    model = Skill
+    fields = ['description', 'skill_level']
+    success_url = '/skills'
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+class SkillUpdate(UpdateView):
+    model = Skill
+    fields = ['description', 'skill_level']
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return HttpResponseRedirect('/skills/')
+
+class SkillDelete(DeleteView):
+  model = Skill
+  success_url = '/skills'
 
 
 # Create your views here.
@@ -15,7 +37,6 @@ def index(request):
 
 def login_view(request):
     if request.method == 'POST':
-        # if post, then authenticate (user submitted username and password)
         form = LoginForm(request.POST)
         if form.is_valid():
             u = form.cleaned_data['username']
@@ -24,7 +45,7 @@ def login_view(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponseRedirect('/')
+                    return HttpResponseRedirect('/skills')
                 else:
                     print("The account has been disabled.")
                     return HttpResponseRedirect('/')
@@ -52,6 +73,13 @@ def signup(request):
         return render(request, 'signup.html', {'form': form})
 
 
-def profile(request, username):
-    user = User.objects.get(username=username)
-    return render(request, 'profile.html', {'username': username})
+def skills_index(request):
+    skills = Skill.objects.all()
+    return render(request, 'skills/index.html', {'skills': skills})
+
+def skills_detail(request, skill_id):
+    skill = Skill.objects.get(id=skill_id)
+    return render(request, 'skills/detail.html', {'skill': skill})
+
+def about(request):
+    return render(request, 'about.html')
