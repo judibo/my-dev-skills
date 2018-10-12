@@ -74,7 +74,7 @@ def signup(request):
 
 
 def skills_index(request):
-    skills = Skill.objects.all()
+    skills = request.user.skill_set.all()
     return render(request, 'skills/index.html', {'skills': skills})
 
 def skills_detail(request, skill_id):
